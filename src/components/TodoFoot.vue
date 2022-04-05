@@ -1,16 +1,42 @@
 <template>
-  <div class="foot">
-  <el-checkbox>全选</el-checkbox>
-  <span>已完成： 5 / 合计： 5</span> 
-      <el-button  size="small" >删除</el-button>
+ <div>
+   <el-empty description="空空如也" v-show="!todoLength"></el-empty>
+    <div class="foot" v-show="todoLength">
+  <el-checkbox :value="isAll" @change="checkAll()">全选</el-checkbox>
+  <span>已完成： {{doneTodo}} / 合计： {{todoLength}}</span> 
+      <el-button  size="small" @click="handleDeleteDone">删除已完成</el-button>
   </div>
+ </div>
 </template>
 
 <script>
 export default {
   name: 'TodoFoot',
-  props: {
-    msg: String
+  props: ['todos','checkAllTodo','deleteDone'],
+  computed:{
+    todoLength(){
+      return this.todos.length
+    },
+    doneTodo(){
+      let i = 0
+      this.todos.forEach((todo)=>{
+        if(todo.done){
+          i++
+        }
+      })
+      return i
+    },
+    isAll(){
+      return this.todoLength===this.doneTodo&&this.todoLength>0
+    }
+  },
+  methods:{
+    checkAll(){
+      this.checkAllTodo(!this.isAll)
+    },
+    handleDeleteDone(){
+      this.deleteDone()
+    }
   }
 }
 </script>
@@ -25,6 +51,6 @@ label input  {
   float: left;
 }
 span{
-  margin: 0 80px;
+  margin: 0 65px;
 }
 </style>

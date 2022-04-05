@@ -1,6 +1,6 @@
 <template>
   <div class="todoitem">
-    <el-checkbox v-model="checked" @change="handleCheck(todo.id)" >
+    <el-checkbox :value="todo.done" @change="handleCheck(todo.id)" >
      
       <el-input v-model="inputValue" v-show="todo.isEdit" ref="buttonFocus" placeholder="请输入内容" size="mini" @blur="handleBlur(todo)">
       </el-input>

@@ -3,7 +3,7 @@
     <div id="app">
       <TodoTop/>
       <TodoList :todos="todos"  />
-      <TodoFoot/>
+      <TodoFoot :todos="todos" :checkAllTodo="checkAllTodo" :deleteDone="deleteDone"/>
     </div>
   </div>
 </template>
@@ -40,6 +40,16 @@ export default {
     deleteTodo(x){
       this.todos=this.todos.filter((todo)=>{
         return todo.id!=x
+      })
+    },
+    deleteDone(){
+      this.todos=this.todos.filter((todo)=>{
+        return todo.done==false
+      })
+    },
+    checkAllTodo(x){
+      this.todos.forEach((todo)=>{
+        todo.done=x
       })
     },
     statusTodo(x){

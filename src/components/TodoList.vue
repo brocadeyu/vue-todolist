@@ -1,5 +1,5 @@
 <template><div class="main">
-  <el-divider content-position="left">待办事项</el-divider>
+  <el-divider content-position="center">待办事项</el-divider>
   <TodoItem v-for="todo in todos"  :key="todo.id" :todo="todo" />
   </div>
 </template>
