@@ -23,22 +23,50 @@ export default {
       todos:[
         {title:'学习',id:1,done:false},
         {title:'看书',id:2,done:true},
-        {title:'游戏',id:3,done:false},
-        {title:'写字000',id:5,done:false},
-        {title:'写字000',id:6,done:false},
-        {title:'写字000',id:7,done:false},
-        {title:'写字000',id:8,done:false},
-        {title:'写字000',id:9,done:false},
-        {title:'写字00',id:10,done:true},
-
+        {title:'游戏',id:3,done:false}
       ]
     }
   },
   methods:{
     addTodo(x){
       this.todos.unshift(x)
+    },
+    editTodo(data,x){
+      this.todos.forEach((todo)=>{
+        if(todo.id===data.id)
+        todo.title=x
+      })
+    },
+    deleteTodo(x){
+      this.todos=this.todos.filter((todo)=>{
+        return todo.id!=x
+      })
+    },
+    statusTodo(x){
+      this.todos.forEach((todo)=>{
+        if(todo.id===x)
+        todo.done=!todo.done
+      })
     }
-
+  },
+  mounted(){
+    this.$bus.$on('addTodo',(data)=>{
+      this.addTodo(data);
+    })
+    this.$bus.$on('statusTodo',(data)=>{
+      this.statusTodo(data);
+    })
+    this.$bus.$on('deleteTodo',(data)=>{
+      this.deleteTodo(data);
+    })
+    this.$bus.$on('editTodo',(data,x)=>{
+      this.editTodo(data,x);
+    })
+  },
+  beforeDestroy(){
+    this.$bus.$off('addTodo')
+    this.$bus.$off('statusTodo')
+    this.$bus.$off('deleteTodo')
   }
 }
 </script>

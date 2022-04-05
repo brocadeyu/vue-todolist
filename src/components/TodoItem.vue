@@ -1,16 +1,53 @@
 <template>
   <div class="todoitem">
-    <el-checkbox :checked="todo.done">{{todo.title}}</el-checkbox>
-    <el-button @click="handleClick" type="success"  size="small" >完成</el-button>
-    <el-button @click="handleClick" type="danger" size="small" >删除</el-button>
-    <el-button @click="handleClick" type="primary" size="small" >编辑</el-button>
+    <el-checkbox v-model="checked" @change="handleCheck(todo.id)" >
+     
+      <el-input v-model="inputValue" v-show="todo.isEdit" ref="buttonFocus" placeholder="请输入内容" size="mini" @blur="handleBlur(todo)">
+      </el-input>
+    </el-checkbox>
+     <span v-show="!todo.isEdit">
+        {{todo.title}}
+      </span>
+    <el-button  type="success"  size="small" @click="handleCheck1(todo.id)">完成</el-button>
+    <el-button  type="danger" size="small" @click="handleDelete(todo.id)">删除</el-button>
+    <el-button  type="primary" size="small" @click="handleEdit(todo)" >编辑</el-button>
   </div>
 </template>
 
 <script>
 export default {
   name: 'TodoItem',
-  props: ['todo']
+  props: ['todo'],
+  data(){
+    return {
+      checked:this.todo.done,
+      inputValue:''
+    }
+  },
+  methods:{
+    handleCheck(x){
+      this.$bus.$emit('statusTodo',x)
+    },
+    handleDelete(x){
+      this.$bus.$emit('deleteTodo',x)
+    },
+    handleEdit(todo){
+      this.$set(todo,'isEdit',true)
+      this.inputValue=this.todo.title
+      this.$nextTick(function () {
+         this.$refs.buttonFocus.$el.querySelector('input').focus();
+     });
+    },
+    handleBlur(todo){
+         this.$bus.$emit('editTodo',todo,this.inputValue)
+      todo.isEdit=false
+   
+    },
+    handleCheck1(x){
+      this.$bus.$emit('statusTodo',x)
+      this.checked=!this.checked
+    }
+  }
 }
 </script>
 
@@ -27,11 +64,20 @@ export default {
  float: right;
  margin-left: 10px;
 }
-
-.todoitem:hover button {
+.el-input{
+  width:100px
+}
+.todoitem:hover button  {
  display: inline-block;
 
 }
+/* .el-checkbox{
+  visibility: hidden;
+}
+.todoitem:hover .el-checkbox {
+ visibility: inherit;
+
+} */
 
 
 

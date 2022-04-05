@@ -1,5 +1,5 @@
 <template><div class="main">
-  <el-divider></el-divider>
+  <el-divider content-position="left">待办事项</el-divider>
   <TodoItem v-for="todo in todos"  :key="todo.id" :todo="todo" />
   </div>
 </template>
@@ -24,4 +24,5 @@ export default {
   border-radius: 10px; */
 
 }
+
 </style>

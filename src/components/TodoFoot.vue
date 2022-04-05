@@ -2,7 +2,7 @@
   <div class="foot">
   <el-checkbox>全选</el-checkbox>
   <span>已完成： 5 / 合计： 5</span> 
-      <el-button @click="handleClick"  size="small" >删除</el-button>
+      <el-button  size="small" >删除</el-button>
   </div>
 </template>
 

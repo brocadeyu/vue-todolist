@@ -1,20 +1,33 @@
 <template>
   <div class="top">
-    <el-input value="666" placeholder="请输入内容"></el-input>
-    <el-button @click="handleClick">添加</el-button>
+    <el-input v-model="inputValue" placeholder="请输入内容"></el-input>
+    <el-button @click="handleAdd">添加</el-button>
   </div>
 </template>
 
 <script>
+import {nanoid} from 'nanoid'
 export default {
   name: 'TodoTop',
   props: {
     msg: String
   },
   methods:{
-    handleClick(e){
+    handleAdd(e){
       e.target.blur()
       e.target.parentNode.blur();
+      const x={
+        title:this.inputValue,
+        id:nanoid(),
+        done:false
+      }
+      this.$bus.$emit('addTodo',x)
+      this.inputValue=''
+    }
+  },
+  data(){
+    return {
+      inputValue:''
     }
   }
 }
