@@ -9,19 +9,17 @@
 import {nanoid} from 'nanoid'
 export default {
   name: 'TodoTop',
-  props: {
-    msg: String
-  },
   methods:{
     handleAdd(e){
       e.target.blur()
       e.target.parentNode.blur();
-      const x={
+      if(!this.inputValue) return this.$message('请输入内容');
+      const todoObj={
         title:this.inputValue,
         id:nanoid(),
         done:false
       }
-      this.$bus.$emit('addTodo',x)
+      this.$bus.$emit('addTodo',todoObj)
       this.inputValue=''
     }
   },

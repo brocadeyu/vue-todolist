@@ -20,10 +20,11 @@ export default {
   },
   data(){
     return {
-      todos:[
-        {title:'学习',id:1,done:false},
-        {title:'看书',id:2,done:true},
-        {title:'游戏',id:3,done:false}
+      todos:JSON.parse(localStorage.getItem('todos')) || [
+        {title:'吃饭',id:1,done:true},
+        {title:'睡觉',id:2,done:false},
+        {title:'代码',id:3,done:true},
+        {title:'本地存储，隐私++',id:4,done:true},
       ]
     }
   },
@@ -59,6 +60,14 @@ export default {
       })
     }
   },
+  watch:{
+    todos:{
+      deep:true,
+      handler(value){
+        localStorage.setItem('todos',JSON.stringify(value))
+      }
+    }
+  },
   mounted(){
     this.$bus.$on('addTodo',(data)=>{
       this.addTodo(data);
@@ -71,6 +80,13 @@ export default {
     })
     this.$bus.$on('editTodo',(data,x)=>{
       this.editTodo(data,x);
+    })
+    this.todos.forEach((todo)=>{
+      if(todo.isEdit){
+         todo.isEdit=false
+     this.$message('请重新输入')
+      }
+    
     })
   },
   beforeDestroy(){

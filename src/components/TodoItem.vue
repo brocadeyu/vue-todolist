@@ -1,16 +1,16 @@
 <template>
   <div class="todoitem">
-    <el-checkbox :value="todo.done" @change="handleCheck(todo.id)" >
+    <el-checkbox :value="todo.done"  @change="handleCheck(todo.id)" >
      
-      <el-input v-model="inputValue" v-show="todo.isEdit" ref="buttonFocus" placeholder="请输入内容" size="mini" @blur="handleBlur(todo)">
+      <el-input v-model="inputValue" maxlength="10" autofocus="true" v-show="todo.isEdit" ref="buttonFocus" placeholder="请输入内容" size="mini" @blur="handleBlur(todo)">
       </el-input>
     </el-checkbox>
      <span v-show="!todo.isEdit">
         {{todo.title}}
       </span>
-    <el-button  type="success"  size="small" @click="handleCheck1(todo.id)">完成</el-button>
-    <el-button  type="danger" size="small" @click="handleDelete(todo.id)">删除</el-button>
-    <el-button  type="primary" size="small" @click="handleEdit(todo)" >编辑</el-button>
+    <el-button v-show="!todo.isEdit"  type="success"  size="small" @click="handleCheck1(todo.id)">完成</el-button>
+    <el-button v-show="!todo.isEdit"  type="danger" size="small" @click="handleDelete(todo.id)">删除</el-button>
+    <el-button v-show="!todo.isEdit"   type="primary" size="small" @click="handleEdit(todo)" >编辑</el-button>
   </div>
 </template>
 
@@ -39,9 +39,19 @@ export default {
      });
     },
     handleBlur(todo){
-         this.$bus.$emit('editTodo',todo,this.inputValue)
+      if(!this.inputValue) {
+        
+         this.inputValue=this.todo.title
+         todo.isEdit=false
+          this.$message('输入不能为空');
+         
+      }
+      else{
+        this.$bus.$emit('editTodo',todo,this.inputValue)
       todo.isEdit=false
    
+      }
+      
     },
     handleCheck1(x){
       this.$bus.$emit('statusTodo',x)
